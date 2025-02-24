@@ -54,8 +54,24 @@ const express = require('express');
 
 const bodyParser = require('body-parser');
 
+// Cookiessind kleine Textdateien, die beim Besuch von Webseiten auf dem lokalen Rechner
+// von Nutzern gespeichert werden. Beim erneuten Seitenbesuch können sie direkt an den Server 
+// gesendet werden.
+// Cookies können notwendig sein oder z.B. der Werbung dienen.
+// Cookies können z.B. ganz konkret einen Warenkorb nach Tagen wieder anzeigen, obwohl
+// der Nutzer sich bei dem Händlernoch nicht registriert hat.
 // Der cookieparser ist für die Verarbeitung der cookies unserer App zuständig.
 // Mit dem cookieparser können wir cookies setzen und auslesen und löschen.
+// Man kann Cookies im Browser anzeigen, indem man F12 drückt.
+// Weil man Cookies im Browser sehr einfach wieder auslesen kann, kann man Cookies signieren.
+
+// In der Banking App sollen cookies wie folgt eingesetzt werden:
+// 1. Wenn sich der Kunde an der App anmeldet, wird ein Code in seinem Browser gespeichert
+//    Der Cookie enthält seine Kundendaten
+//    Immer, wenn der Kundenach der Anmeldung in der App den Button drückt, werden
+//    seine Kundendaten vom Browser an den Server übergeben. Der Server weiß dadurch,
+//    mit welchem Kunden er es zu tun hat. So ermöglichen wir, dass mehrere Kunden gleichzeitig
+//    mit dem Server interagieren können.
 
 const cookieParser = require('cookie-parser')
 
@@ -84,7 +100,18 @@ app.use(bodyParser.urlencoded({extended: true}))
 // Cookies können verschlüsselt im Browser abgelegt werden. Dadurch kann ein im Browser gespeichertes Kennwort nicht mehr
 // ausgelesen werden. Nur unsere App kann den verschlüsselten cookie verwenden. Dazu wird das secret geheim "genutzet"
 
+
+
+
+
+
 app.use(cookieParser())
+
+
+// Geheimer Schlüssel für signierte cookies
+const secretKey = 'mein_geheimer_schluessel';
+// app.use(cookieParser(secretKey));
+
 
 
 // Die app.get wird abgearbeitet, sobald die Index-Seite angesurft wird.
@@ -354,11 +381,17 @@ app.post('/login', (req, res) => {
 		kunde.IstEingeloggt = true;
 		console.log("kunde.IstEingeloggt: " + kunde.IstEingeloggt)
 
-		// Ein cookie wird gesetzt
-		res.cookie('name', 'John Doe', { maxAge: 900000, httpOnly: true });
+
+		// Wenn der Kunde seine Credentials richtig eingegeben hat, 
+		// wird ein cookie wird gesetzt.
+		// Um das ganze Kundenobjekt im Cookie speichrn zu könne, wird das
+		// Kundenobjekt in eine Zeichenkette umgewandelt. Dazu wird die stringify-Funktion
+		// auf das JSON-Objektaufgerufen
+		res.cookie('istAngemeldetAls', JSON.stringify(kunde), { maxAge: 900000, httpOnly: true, signed:false });
+		console.log("Das Kundenobjekt im Cookie gespeichert.")
 
 
-		res.clearCookie('name')
+		
 
 
 
