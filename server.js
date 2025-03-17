@@ -73,7 +73,27 @@ const bodyParser = require('body-parser');
 //    mit welchem Kunden er es zu tun hat. So ermöglichen wir, dass mehrere Kunden gleichzeitig
 //    mit dem Server interagieren können.
 
+
+
+
 const cookieParser = require('cookie-parser')
+
+// Die Bibliothek email-validator prüft emails auf synthaktische Korrektheit.
+// Die Anforderungen an gültige emails sind exakt festgelegt im RCF 5322.
+
+var validator = require("email-validator");
+
+// Die Funktion validate wird auf das validator-Objekt aufgerufen.
+// Als Parameter wird eine Mail-Adresse an die Funktion übergeben.
+// Der Rückgabewert der Funktion istr true oder false.
+
+validator.validate("test@email.com"); // true
+
+if(validator.validate("stefan.baeumer@berufskolleg-borken.de")){
+	console.log("Gültige EMail.")
+}else{
+	console.log("Ungültige EMail.")
+}
 
 // Die Anweisungen werden von oben nach unten abgearbeitet. Der Wert 3000 wird von rechts nach links 
 // zugewiesen an die Konstante namens PORT. Das einfache Gleichheitszeichen lässt sich also übersetzen
@@ -209,6 +229,28 @@ app.get('/profil', (req, res) => {
 		res.render('login.ejs',{
 			Meldung: "Melden Sie sich zuerst an."
 		});
+	}
+});
+
+app.post('/profil', (req, res) => {
+	
+	if(kunde.IstEingeloggt){
+
+		// Der Wert von Email wird vom Browser entgegengenommen, sobald der Kunde 
+		// sein Profil ändern will.
+
+		let email = req.body.Email;
+
+		// Die übergebene Addresse wird an die Validate-Funktion übergeben und geprüft.
+
+		if(validator.validate("email")){
+			console.log("Gültige EMail.")
+
+			res.render
+
+		}else{
+			console.log("Ungültige EMail.")
+		}
 	}
 });
 
