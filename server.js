@@ -1,9 +1,15 @@
+const IBANValidator = require('iban-validator-js')
+// Die IBAN-Validator-Bibliothek wird mit dem Befehl 'npm install iban-validator-js' installiert.
+// Der Befehl muss im Terminal ausgeführt werden.
+// Die IBAN-Validator-Bibliothek wird in die Datei eingebunden
+
+
 // Klassendefinition des Kunden
 class Kunde{
 	constructor(){
 		this.Nachname
 		this.Vorname
-		this.Benutzername
+		this.Benutzername  
 		this.Kennwort
 		// IstEingeloggt ist ein boolean.
 		// Der Wert ist entweder wahr oder falsch.
@@ -471,7 +477,26 @@ app.listen(PORT, HOST);
 // immer für eine Anweisung etwas zu tun. 
 console.log(`Running on http://${HOST}:${PORT}`);
 
+ 
+
+// Die IBAN-Validator-Bibliothek wird mit dem Befehl 'npm install iban-validator-js' installiert.
+// Der Befehl muss im Terminal ausgeführt werden.								
+
+
+// Die IBAN-Validator-Bibliothek wird in die Datei eingebunden
+;
+
+
+// Die IBAN-Validator-Bibliothek wird mit der Funktion isValid() aufgerufen.
+// Die Funktion prüft, ob die übergebene IBAN gültig ist.
+// Die Funktion gibt true oder false zurück.
+IBANValidator.isValid(''); // false
+IBANValidator.isValid('not-a-valid-IBAN'); // false
+IBANValidator.isValid('TR320010009999901234567890'); // true
+IBANValidator.isValid('BE68539007547034'); // true
+
+
 //require('./uebungen/01-grundlagen.js');
 //require('./uebungen/03-objekte.js');
 //require('./klausuren/klausur20240930.js');
-//require('./uebungen/04-funktionen.js');
+//require('./uebungen/04-funktionen.js');npm install iban-validator-js
